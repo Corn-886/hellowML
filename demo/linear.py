@@ -49,7 +49,7 @@ if __name__ == '__main__':
     w.attach_grad()
     b.attach_grad()
     # 循环
-    lr = 0.03
+    lr = 0.3
     num_epochs = 3
     net = linreg
     loss = squared_loss

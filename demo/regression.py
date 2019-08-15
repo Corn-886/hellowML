@@ -49,12 +49,13 @@ def evaluate_accuracy(data_iter, net):
     return acc_sum / n
 
 
-num_epochs, lr = 5, 0.2
+num_epochs, lr = 15, 0.5
 
 
 # 训练函数
 def train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size,
               params=None, lr=None, trainer=None):
+    train_ls, test_ls = [], []
     for epoch in range(num_epochs):
         train_l_sum, train_acc_sum, n = 0.0, 0.0, 0
         for X, y in train_iter:
@@ -72,6 +73,9 @@ def train_ch3(net, train_iter, test_iter, loss, num_epochs, batch_size,
             n += y.size
         test_acc = evaluate_accuracy(test_iter, net)
         print("输出 %d,损失误差 %.4f 训练acc %.3f ,测试acc %.3f" % (epoch + 1, train_l_sum / n, train_acc_sum / n, test_acc))
+        train_ls.append(train_l_sum / n)
+        test_ls.append(test_acc)
+
 
 
 if __name__ == '__main__':
