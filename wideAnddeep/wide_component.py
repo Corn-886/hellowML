@@ -169,6 +169,7 @@ if __name__ == '__main__':
     print("tf.version"+tf.VERSION)
     data_file = './data/adult.data'
     next_batch = input_fn(data_file, num_epochs=1, shuffle=True, batch_size=5)
-    with tf.Session() as sess:
-        first_batch = sess.run(next_batch)
-        print(first_batch[0])
+    print("data"+next_batch)
+    # with tf.Session() as sess:
+    #     first_batch = sess.run(next_batch)
+    #     print(first_batch[0])

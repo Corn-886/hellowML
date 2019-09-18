@@ -1,0 +1,10 @@
+buy_prd_A,buy_prd_b,0
+buy_prd_b,buy_prd_b,1
+buy_prd_A,buy_prd_b,0
+buy_prd_c,buy_prd_c,1
+buy_prd_b,buy_prd_c,0
+buy_prd_b,buy_prd_c,2
+buy_prd_c,buy_prd_b,1
+buy_prd_A,buy_prd_b,2
+buy_prd_A,buy_prd_b,1
+buy_prd_c,buy_prd_b,0
