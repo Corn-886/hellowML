@@ -1,8 +1,10 @@
 import tensorflow as tf
 
 _CSV_COLUMNS = ['buyhistory1', 'buyhistory2', 'buyhistory3']
+_CSV_COLUMN_DEFAULTS = [[''], [''], [0]]
 
-_CSV_COLUMN_DEFAULTS = [[''], [''], ['']]
+_CSV_COLUMNS_TEST = ['buyhistory1', 'buyhistory2']
+_CSV_COLUMN_DEFAULTS_TEST = [[''], ['']]
 
 
 # 用户购买历史购买
@@ -26,17 +28,23 @@ def train_input_fn():
 
 
 def eval_input_fn():
-    dataset = tf.data.TextLineDataset('./data/wide_component_test.csv')
+    # dataset = tf.data.TextLineDataset('./data/wide_component_test.csv')
+    def parse_csv(line):
+        columns = tf.decode_csv(line, record_defaults=_CSV_COLUMN_DEFAULTS_TEST)
+        features = dict(zip(_CSV_COLUMNS_TEST, columns))
+        return features
 
-    return dataset
+    dataset = tf.data.TextLineDataset('./data/wide_component_test.csv').map(parse_csv).batch(2)
+
+    iterator = dataset.make_one_shot_iterator()
+    batch_features = iterator.get_next()
+    return batch_features
 
 
 buyhistory1 = tf.feature_column.categorical_column_with_hash_bucket(key='buyhistory1',
                                                                     hash_bucket_size=5)
 buyhistory2 = tf.feature_column.categorical_column_with_hash_bucket(key='buyhistory2',
                                                                     hash_bucket_size=5)
-# buyhistory3 = tf.feature_column.categorical_column_with_hash_bucket('buyhistory3',
-#                                                                     hash_bucket_size=5)
 
 base_column = [buyhistory1, buyhistory2]
 
@@ -58,19 +66,26 @@ def main():
                                       inter_op_parallelism_threads=5,
                                       intra_op_parallelism_threads=10))
 
-    base_feature, lables = train_input_fn()
 
     # 模型
-    model = tf.estimator.LinearClassifier(model_dir='./model/wide_compoent_test',
+    model = tf.estimator.LinearClassifier(model_dir='./model/wide_component_eval',
                                           feature_columns=base_column,
+                                          n_classes=_CSV_COLUMNS.__len__(),
                                           config=run_config)
 
-    model.train(input_fn=lambda: train_input_fn)
+    model.train(input_fn=lambda: train_input_fn(), steps=10)
     results = model.evaluate(input_fn=train_input_fn)
 
     for key in sorted(results):
         print('%s: %s' % (key, results[key]))
 
+    predictions = model.predict(
+        input_fn=lambda: eval_input_fn())
+    template = ('\nPrediction is "{}" ({:.1f}%), expected "{}"')
+
+
+    for pred_dict, expec in zip(predictions, _CSV_COLUMNS_TEST):
+        print(pred_dict,expec)
 
 if __name__ == '__main__':
     main()

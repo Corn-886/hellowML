@@ -73,9 +73,7 @@ def testColumnApi():
 
 def main():
     # testColumnApi()
-    data_file = './data/adult.data'
-    next_batch = input_fn(data_file)
-    print(next_batch)
+    print(_CSV_COLUMN_DEFAULTS.__len__())
 
 # testJson()
 
