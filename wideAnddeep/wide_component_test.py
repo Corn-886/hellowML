@@ -19,8 +19,8 @@ def train_input_fn():
         lables = features.pop('buyhistory3')
         return features, lables
 
-    dataset = tf.data.TextLineDataset('./data/wide_component_eval.csv').map(parse_csv).batch(10)
-
+    dataset = tf.data.TextLineDataset('./data/wide_component_eval.csv').map(parse_csv).shuffle(10).batch(20)
+    # dataset=dataset.shuffle(10)
     iterator = dataset.make_one_shot_iterator()
     batch_features, labels = iterator.get_next()
 
@@ -34,7 +34,7 @@ def eval_input_fn():
         features = dict(zip(_CSV_COLUMNS_TEST, columns))
         return features
 
-    dataset = tf.data.TextLineDataset('./data/wide_component_test.csv').map(parse_csv).batch(2)
+    dataset = tf.data.TextLineDataset('./data/wide_component_test.csv').map(parse_csv).batch(3)
 
     iterator = dataset.make_one_shot_iterator()
     batch_features = iterator.get_next()
@@ -45,16 +45,15 @@ buyhistory1 = tf.feature_column.categorical_column_with_hash_bucket(key='buyhist
                                                                     hash_bucket_size=5)
 buyhistory2 = tf.feature_column.categorical_column_with_hash_bucket(key='buyhistory2',
                                                                     hash_bucket_size=5)
+categorical_feature_a_emb = tf.feature_column.embedding_column(
+    categorical_column=buyhistory1, dimension=9)
+categorical_feature_b_emb = tf.feature_column.embedding_column(
+    categorical_column=buyhistory2, dimension=9)
+
+base_DNN_column = [categorical_feature_a_emb, categorical_feature_b_emb]
 
 base_column = [buyhistory1, buyhistory2]
 
-
-# # or
-# keywords_embedded = embedding_column(keywords, 16)
-# columns = [keywords_embedded, ...]
-# features = tf.parse_example(..., features=make_parse_example_spec(columns))
-# dense_tensor = input_layer(features, columns)
-# ```
 
 #  定义特征类型，这里直接hash化
 
@@ -66,26 +65,39 @@ def main():
                                       inter_op_parallelism_threads=5,
                                       intra_op_parallelism_threads=10))
 
-
     # 模型
     model = tf.estimator.LinearClassifier(model_dir='./model/wide_component_eval',
                                           feature_columns=base_column,
                                           n_classes=_CSV_COLUMNS.__len__(),
-                                          config=run_config)
+                                          config=run_config, optimizer=tf.train.FtrlOptimizer(
+            learning_rate=0.02,
+            l1_regularization_strength=1.0,
+            l2_regularization_strength=1.0
+        ))
+    # model = tf.estimator.DNNClassifier(model_dir='./model/wide_component_eval_DNN',
+    #                                    feature_columns=base_DNN_column,
+    #                                    hidden_units=[ 10,10],
+    #                                    activation_fn=tf.nn.sigmoid,
 
-    model.train(input_fn=lambda: train_input_fn(), steps=10)
-    results = model.evaluate(input_fn=train_input_fn)
+    #                                    config=run_config,
+    #                                    n_classes=3)
 
-    for key in sorted(results):
-        print('%s: %s' % (key, results[key]))
+    for n in range(50):
+        model.train(input_fn=lambda: train_input_fn())
+        results = model.evaluate(input_fn=train_input_fn)
 
-    predictions = model.predict(
-        input_fn=lambda: eval_input_fn())
-    template = ('\nPrediction is "{}" ({:.1f}%), expected "{}"')
+        for key in sorted(results):
+            print('%s: %s' % (key, results[key]))
 
+        predictions = model.predict(
+            input_fn=lambda: eval_input_fn())
 
-    for pred_dict, expec in zip(predictions, _CSV_COLUMNS_TEST):
-        print(pred_dict,expec)
+        expected = ['buy_prd_A', 'buy_prd_b', 'buy_prd_c']
+        for pred_dict, expec in zip(predictions, expected):
+            class_id = pred_dict['class_ids'][0]
+            print(class_id, pred_dict['probabilities'][class_id])
+            # print(pred_dict)
+
 
 if __name__ == '__main__':
     main()

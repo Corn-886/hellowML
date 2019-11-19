@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import tensorflow as tf
+import os
 from tensorflow.python.feature_column.feature_column import _LazyBuilder
 
 _CSV_COLUMNS = [
@@ -73,8 +74,9 @@ def testColumnApi():
 
 def main():
     # testColumnApi()
-    print(_CSV_COLUMN_DEFAULTS.__len__())
-
+    # print(_CSV_COLUMN_DEFAULTS.__len__())
+    buffer_PATH=os.path.join('housePerdit','data')
+    print(buffer_PATH)
 # testJson()
 
 
