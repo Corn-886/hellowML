@@ -1,0 +1,185 @@
+Hugging Face's logo
+Hugging Face
+
+google-bert
+/
+bert-base-chinese 
+
+Like
+1.5k
+
+Follow
+BERT community
+1.3k
+Fill-Mask
+Transformers
+PyTorch
+TensorFlow
+JAX
+Safetensors
+Chinese
+bert
+
+arxiv:
+1810.04805
+
+License:
+apache-2.0
+Model card
+Files
+xet
+Community
+44
+
+bert-base-chinese
+/
+model.safetensors 
+lysandre's picture
+lysandre
+HF StaffNarsil's picture
+Narsil
+Adding `safetensors` variant of this model (#6)
+84b432f
+
+Download
+History
+Blame
+Contribute
+Delete
+412 MB
+This file is stored with Xet . It is too big to display, but you can still download it.
+Xet Pointer Details
+(
+Raw pointer file
+)
+Xet hash:
+49b7d1dd65a3fe7bea585c2cdc68c874d23c5a73652d694354652200a618ee72
+Size of remote file:
+412 MB
+·
+SHA256:
+3404a1ffd8da507042e8161013ba2a4fc49858b4e3f8fbf5ce5724f94883aec3
+Xet efficiently stores Large Files inside Git, intelligently splitting files into unique chunks and accelerating uploads and downloads. More info.
+
+format	pt
+
+bert(3) 		
+bert.embeddings(4) 		
+bert.embeddings.position_embeddings.weight	[512, 768]	
+F32
+
+bert.embeddings.token_type_embeddings.weight	[2, 768]	
+F32
+
+bert.embeddings.word_embeddings.weight	[21 128, 768]	
+F32
+
+bert.embeddings.LayerNorm(2) 		
+bert.embeddings.LayerNorm.beta	[768]	
+F32
+
+bert.embeddings.LayerNorm.gamma	[768]	
+F32
+
+bert.encoder.layer(12) 		
+bert.encoder.layer.0(3) 		
+bert.encoder.layer.0.attention(2) 		
+bert.encoder.layer.0.attention.self(6) 		
+bert.encoder.layer.0.attention.self.key.bias	[768]	
+F32
+
+bert.encoder.layer.0.attention.self.key.weight	[768, 768]	
+F32
+
+bert.encoder.layer.0.attention.self.query.bias	[768]	
+F32
+
+bert.encoder.layer.0.attention.self.query.weight	[768, 768]	
+F32
+
+bert.encoder.layer.0.attention.self.value.bias	[768]	
+F32
+
+bert.encoder.layer.0.attention.self.value.weight	[768, 768]	
+F32
+
+bert.encoder.layer.0.attention.output(4) 		
+bert.encoder.layer.0.attention.output.dense.bias	[768]	
+F32
+
+bert.encoder.layer.0.attention.output.dense.weight	[768, 768]	
+F32
+
+bert.encoder.layer.0.attention.output.LayerNorm.beta	[768]	
+F32
+
+bert.encoder.layer.0.attention.output.LayerNorm.gamma	[768]	
+F32
+
+bert.encoder.layer.0.intermediate.dense(2) 		
+bert.encoder.layer.0.intermediate.dense.bias	[3 072]	
+F32
+
+bert.encoder.layer.0.intermediate.dense.weight	[3 072, 768]	
+F32
+
+bert.encoder.layer.0.output(2) 		
+bert.encoder.layer.0.output.dense(2) 		
+bert.encoder.layer.0.output.dense.bias	[768]	
+F32
+
+bert.encoder.layer.0.output.dense.weight	[768, 3 072]	
+F32
+
+bert.encoder.layer.0.output.LayerNorm(2) 		
+bert.encoder.layer.0.output.LayerNorm.beta	[768]	
+F32
+
+bert.encoder.layer.0.output.LayerNorm.gamma	[768]	
+F32
+
+bert.encoder.layer.1(3) 		
+bert.encoder.layer.2(3) 		
+bert.encoder.layer.3(3) 		
+bert.encoder.layer.4(3) 		
+bert.encoder.layer.5(3) 		
+bert.encoder.layer.6(3) 		
+bert.encoder.layer.7(3) 		
+bert.encoder.layer.8(3) 		
+bert.encoder.layer.9(3) 		
+bert.encoder.layer.10(3) 		
+bert.encoder.layer.11(3) 		
+bert.pooler.dense(2) 		
+bert.pooler.dense.bias	[768]	
+F32
+
+bert.pooler.dense.weight	[768, 768]	
+F32
+
+cls(2) 		
+cls.predictions(2) 		
+cls.predictions.bias	[21 128]	
+F32
+
+cls.predictions.transform(2) 		
+cls.predictions.transform.dense(2) 		
+cls.predictions.transform.dense.bias	[768]	
+F32
+
+cls.predictions.transform.dense.weight	[768, 768]	
+F32
+
+cls.predictions.transform.LayerNorm(2) 		
+cls.predictions.transform.LayerNorm.beta	[768]	
+F32
+
+cls.predictions.transform.LayerNorm.gamma	[768]	
+F32
+
+cls.seq_relationship(2) 		
+cls.seq_relationship.bias	[2]	
+F32
+
+cls.seq_relationship.weight	[2, 768]	
+F32
+
